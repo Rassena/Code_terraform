@@ -1,0 +1,9 @@
+[
+  {
+    "label": "Code Terraform: debug this script",
+    "adapter": "code-terraform",
+    "request": "launch",
+    "workspace": "$ZED_WORKTREE_ROOT",
+    "script": "$ZED_FILE"
+  }
+]

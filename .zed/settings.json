@@ -1,0 +1,20 @@
+{
+  "languages": {
+    "Python": {
+      "language_servers": [
+        "code-terraform",
+        "!pyright",
+        "!basedpyright",
+        "!pylsp",
+        "!ty",
+        "!ruff",
+        "..."
+      ],
+      "formatter": {
+        "language_server": {
+          "name": "code-terraform"
+        }
+      }
+    }
+  }
+}

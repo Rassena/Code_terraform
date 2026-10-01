@@ -1,0 +1,11 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "codeterraform-workspace.json": "codeterraform-scripts.json, codeterraform-fleet.json, CODE-TERRAFORM-IDE.txt, pyrightconfig.json, pyrightconfig.codeterraform.json, *.pyi, typeshed-LICENSE.txt",
+    "*.py": "${capture}.py.codeterraform-retired-*.bak, ${capture}.py.codeterraform-write.bak"
+  },
+  "files.exclude": {
+    "**/.codeterraform": true
+  }
+}
