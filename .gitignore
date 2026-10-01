@@ -13,3 +13,9 @@ typeshed-LICENSE.txt
 *.codeterraform-write.bak
 *.codeterraform-write.tmp
 *.codeterraform-retired-*.bak
+
+# Ignore all numbered Python files
+*_*.py
+
+# Keep the *_1.py variants
+!*_1.py
