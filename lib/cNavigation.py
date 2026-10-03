@@ -37,6 +37,19 @@ def get_nearest_construction(constructions:list[Construction], x:float, y:float)
             + (construction.position.y - y) ** 2
         )
     )
+    
+def get_nearest_building_ref(building_refs:list[BuildingRef], x:float, y:float)->BuildingRef | None:
+
+    if not building_refs:
+        return None
+    
+    return min(
+        building_refs,
+        key=lambda building_ref: (
+            (building_ref.position[0] - x) ** 2
+            + (building_ref.position[1] - y) ** 2
+        )
+    )
 
 def get_nearest_site_mineral(item_id:str, x:float, y:float) -> MiningSite | None:
     mining_sites = get_sites_mineral_with_item(item_id)
@@ -71,6 +84,19 @@ def get_points_of_interest_not_scanned():
         if not point_of_interest.scanned
     ]
 
+def get_nearest_point_of_interest(x:float, y:float,points_of_interest:list[PointOfInterest]) -> PointOfInterest:
+    
+    if not points_of_interest:
+        return None
+
+    return min(
+        points_of_interest,
+        key=lambda point_of_interest: (
+            (point_of_interest.x - x) ** 2
+            + (point_of_interest.y - y) ** 2
+        )
+    )
+
 def get_nearest_points_of_interest_not_scanned(x:float, y:float) -> PointOfInterest:
     points_of_interest = get_points_of_interest_not_scanned()
     
@@ -94,7 +120,6 @@ def get_points_of_interest_dict() -> dict[str,list[PointOfInterest]]:
         points_of_interest_dict[point_of_interest.kind] = points_of_interest_dict.get(point_of_interest.kind,[]) + [point_of_interest]
         
     return points_of_interest_dict
-
 
 def generate_positions_to_scan(min_x:int, max_x:int, min_y:int, max_y:int, distance:int) -> list[tuple[int,itn]]:
     positions_to_scan = []

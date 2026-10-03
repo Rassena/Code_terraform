@@ -2,9 +2,11 @@ import cStorage as cStor
 
 INGREDIENT_THRESHOLD = 50
 
-STORAGE_DYNAMIC_MAX = 400
+STORAGE_DYNAMIC_MAX = 200
+STORAGE_DYNAMIC_MIN = 10
 PRODUCT_BATCH = 10
 
+product_min = True
 
 
 def clear_recipe():
@@ -88,22 +90,19 @@ def send_byproduct():
 
 def _send_byproduct(byproduct_id: str) -> ActionResult:
     current = self.byproduct.count()
-    available = get_component(self.output.connected_to()).space_for(byproduct_id)
+    available = get_component(self.byproduct.connected_to()).space_for(byproduct_id)
 
     amount = min(current, available)
     if amount > 0:
         while self.byproduct.send(byproduct_id, amount) == "busy":
-            continue
+            pass
         return
     return
-
-
-
-
+    
 
 def product_below_storage_threshold(product_id:str) -> bool:
     products = cStor.get_items_warehouses_outpost(self.outpost.id)
-    return products.get(product_id,0) < STORAGE_DYNAMIC_MAX
+    return products.get(product_id,0) < (STORAGE_DYNAMIC_MIN if product_min else STORAGE_DYNAMIC_MAX)
     
 def ingredients_below_storage_threshold(req_ingredients:dict[str,int]) -> bool:
     ingredients = cStor.get_items_warehouses_outpost(self.outpost.id)
@@ -180,27 +179,32 @@ def dynamic_recipes():
 self.steam_in.connect("gas_tank_1")
 self.water_in.connect("liquid_tank_1")
 self.oil_in.connect("liquid_tank_2")
-self.byproduct.connect("warehouse_5")
+self.byproduct.connect("large_warehouse_1")
 
-if self.input.stacks().length>0:
-    stacks = self.input.stacks()
-    for stack in stacks:
-        set_input_storage(stack.id)
-        while self.input.eject(
-            cStor.get_warehouse_outpost(stack.id,self.outpost.id).id,
-            stack.id,
-            stack.count
-        ).status == "busy":
-            # print("busy:",self.input.eject(
-            # cStor.get_warehouse_outpost(stack.id,self.outpost.id).id,
-            # stack.id,
-            # stack.count))
-            continue
+# if self.input.stacks().length>0:
+#     stacks = self.input.stacks()
+#     for stack in stacks:
+#         set_input_storage(stack.id)
+#         while self.input.eject(
+#             cStor.get_warehouse_outpost(stack.id,self.outpost.id).id,
+#             stack.id,
+#             stack.count
+#         ).status == "busy":
+#             # print("busy:",self.input.eject(
+#             # cStor.get_warehouse_outpost(stack.id,self.outpost.id).id,
+#             # stack.id,
+#             # stack.count))
+#             continue
         
     
-clear_recipe()
+# clear_recipe()
+
+
+
 
 while True:
+    if self.byproduct.count() > 0:
+        send_byproduct()
     next_recipe = next(recipes_possible_below_threshold(),None)
     if next_recipe:
         if self.get_recipe() != next_recipe.id:
@@ -208,7 +212,11 @@ while True:
         else:
             refill(True)
     else:
+        product_min = False
         clear_recipe()
+    
+    
+    
     send_product()
     send_byproduct()
 

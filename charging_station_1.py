@@ -37,7 +37,6 @@ while True:
             
                 
         ):
-                print(self.status(docked)["state"])
                 self.charge(docked,1)
 
 

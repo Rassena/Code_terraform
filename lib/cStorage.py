@@ -1,23 +1,18 @@
 WAREHOUSES_MINERALS:list[Warehouse] = [
-    get_component("warehouse_1"),
-    get_component("warehouse_5")
+    get_component("large_warehouse_1"),
 ]
 
 WAREHOUSES_MATERIALS:list[Warehouse] = [
-    get_component("warehouse_2"),
-    get_component("warehouse_12"),
+    get_component("large_warehouse_2"),
 ]
 
 WAREHOUSES_PRODUCTS:list[Warehouse] = [
-    get_component("warehouse_3"),
-    get_component("warehouse_4"),
-    get_component("warehouse_6"),
-    get_component("warehouse_8"),
-    get_component("warehouse_9"),
-    get_component("warehouse_10"),
-    get_component("warehouse_11"),
-    get_component("warehouse_13"),
+    get_component("large_warehouse_3"),
+    get_component("large_warehouse_4"),
+    get_component("large_warehouse_5"),
+    get_component("large_warehouse_6"),
 ]
+
 WAREHOUSES_REAGENTS:list[Warehouse] = [
     get_component("warehouse_7"),
 ]
@@ -45,7 +40,7 @@ def get_all_warehouses() -> list[Warehouse]:
     return [
         get_component(wh_ref.id) 
         for outpost in outpost_refs
-        for wh_ref in outpost.buildings("warehouse")
+        for wh_ref in outpost.buildings("warehouse") + outpost.buildings("large_warehouse")
     ]
     
 def get_all_storage_bins() -> list[StorageBin]:
@@ -57,7 +52,7 @@ def get_all_storage_bins() -> list[StorageBin]:
     ]
 
 def get_warehouses_outpost(outpost_id:str) -> list[Warehouse]:
-    warehouse_refs = get_component(outpost_id).buildings("warehouse")
+    warehouse_refs = get_component(outpost_id).buildings("warehouse") + get_component(outpost_id).buildings("large_warehouse")
     return [
         get_component(warehouse_ref.id)
             for warehouse_ref in warehouse_refs
