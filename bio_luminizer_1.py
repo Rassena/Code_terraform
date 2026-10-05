@@ -23,13 +23,16 @@
 
 
 
-print(self.input.take(self.input.stacks()[0].id,1))
+# print(self.input.take(self.input.stacks()[0].id,1))
 
-self.load(self.input.stacks()[0].id)
+# self.load(self.input.stacks()[0].id)
 
 
-self.output.connect("bio_exchange_2")
-# print(self.chamber.fragment_id)
-# self.infuse()
-print(self.output.stacks())
-self.output.send(self.output.stacks()[0].id,self.output.stacks()[0].count)
+# self.output.connect("bio_exchange_2")
+# # print(self.chamber.fragment_id)
+# # self.infuse()
+# print(self.output.stacks())
+# self.output.send(self.output.stacks()[0].id,self.output.stacks()[0].count)
+
+
+self.input.flush()

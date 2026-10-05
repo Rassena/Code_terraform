@@ -34,7 +34,7 @@ def print_not_empty():
         print(key, value.name, value.value)
 
 
-scan_all_sectors()
+# scan_all_sectors()
 
 
 

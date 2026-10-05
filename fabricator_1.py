@@ -197,8 +197,14 @@ self.byproduct.connect("large_warehouse_1")
 #             continue
         
     
-# clear_recipe()
 
+
+# while True:
+#     clear_recipe()
+#     self.set_recipe("craft_dispenser_kit")
+#     refill(True)
+#     send_product()
+#     send_byproduct()
 
 
 

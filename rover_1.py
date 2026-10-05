@@ -1,5 +1,8 @@
 from cRover import cRover
 
+
+self = cRover(self)
+
 dict_mining = {
     "iron_ore": "iron_ore",
     "silicon": "silicon",
@@ -32,17 +35,44 @@ manual_rover_mine_task = {
 
 # self.cargo.discard(0)
 
-def main(self):
-    self = cRover(self)
 
-    self.mount_base_setup()
+
+def dumb_task_get_salt():
     
-    self.startup()
+
+    water_pump = get_component("water_pump_1")
+    position = water_pump.well().position()
+    self.move_to_position(position.x,position.y)
+    self._input_connect(water_pump.id)
+    self._input_take_item(
+        "salt",
+        min(
+            self.vehicle.cargo.capacity()-self.vehicle.cargo.count(),
+            water_pump.output.count()
+        )
+    )
+    self.move_to_position(0,0)
+    self._output_sent_item_target(
+        "salt",
+        self.cargo_get_items().get("salt",0),
+        "large_warehouse_1"
+    )
+    self.recharge()
+
+
+
+
+
+def main(self):
+
+    # self.mount_base_setup()
+    # self.startup()
+    
     while True:
-        self.task_mine()
+        dumb_task_get_salt()
         pass
     
-    self.scan_at_position(300,-20)
+    # self.scan_at_position(300,-20)
 
     # mineral_id = ""
 

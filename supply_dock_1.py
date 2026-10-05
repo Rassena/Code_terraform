@@ -43,11 +43,11 @@ def transfer_item(item_id: str) -> ActionResult:
     return
     
 def deploy_order():
-
+    self.set_enabled(False)
     for item_id in self.current_order().requires.keys():
         transfer_item(item_id)
-    
-    return self.set_enabled(True)
+    self.set_enabled(True)
+    return 
 
 
 self.input.flush()
@@ -57,20 +57,26 @@ cOrder.print_orders(cOrder.get_orders_active(self.outpost.id))
 self.clear_order()
 
 while True:
+    orders_possible = [
+        order
+        for order in cOrder.get_orders_possible((self.outpost.id))
+        if order.id != "spire_26"
+    ]
     if (
         self.current_order() is not None
         and self.current_dispatch() is None
     ):
         deploy_order()
-    elif(
+    if(
         self.current_dispatch() is None
     ):
         if order := cOrder.get_next_order_possible_instant(self.outpost.id):
-            print(self.set_order(order.id))
-        elif order := cOrder.get_next_order_possible(self.outpost.id):
-                print(self.set_order(order.id))
+            self.set_order(order.id)
         else:
-            sleep(clock.real_seconds_per_hour())
+            while order := next(orders_possible,None):
+                self.set_order(order.id)
+                deploy_order()
+                # sleep(clock.real_seconds_per_hour())
     
 
 

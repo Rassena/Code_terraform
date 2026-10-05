@@ -3,13 +3,13 @@ import cStorage as cStor
 WASTE_THRESHOLD = 1900
 
 
-wh_minerals_dict = cStor.get_items_warehouses_minerals_outpost(self.outpost.id)
 
 
 self.set_enabled(True)
 self.set_mode("items")
 
 while True:
+    wh_minerals_dict = cStor.get_items_warehouses_minerals_outpost(self.outpost.id)
     for mineral_id,amount in wh_minerals_dict.items():
         if self.input.count() < self.input.capacity() - 10:
             if amount>WASTE_THRESHOLD:

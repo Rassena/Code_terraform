@@ -172,20 +172,17 @@ def main():
 main()
 
 
+# self.move_to_position(350,0)
 
+# self._input_connect("warehouse_14")
 
+# wh = get_component("warehouse_14")
 
+# for item_id in wh.materials():
+#     self._input_take_item(item_id,wh.count(item_id))
 
-
-
-
-
-
-
-
-
-
-
+# print(self.vehicle.cargo.racks())
+# self.vehicle.cargo.discard(0)
 
 
 

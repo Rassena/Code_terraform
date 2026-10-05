@@ -19,3 +19,6 @@ typeshed-LICENSE.txt
 
 # Keep the *_1.py variants
 !*_1.py
+
+# Keep panel_*.py
+!panel_*.py

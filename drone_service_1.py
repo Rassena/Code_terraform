@@ -14,15 +14,25 @@ print(drones)
 
 
 while True:
-    drones = [drone.id for drone in get_component("fleet").drones()]
-    for drone in drones:
-        if hasattr(get_component(drone),"battery"):
+    drone_refs = [drone_ref for drone_ref in get_component("fleet").drones()]
+    for drone_ref in drone_refs:
+        drone = get_component(drone_ref.id)
+        if(
+            drone_ref.engine
+            and drone_ref.battery_capacity>0
+        ):
             if(
-                get_component(drone).battery.level() == 0
-                and not drone in self.get_docked()
-                and get_component(drone).battery.capacity()>0
+                drone.battery.level() == 0
+                and not drone_ref.id in self.get_docked()
+                and drone.battery.capacity()>0
             ):
-                rescue(drone)
+                rescue(drone_ref.id)
+                pass
+        elif(
+            not drone_ref.is_docked
+        ):
+            rescue(drone_ref.id)
+            
     for docked in self.get_docked():
         if (
             self.get_active().length < self.get_bay_count() 

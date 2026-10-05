@@ -11,6 +11,7 @@ ORDER_MINING_CHANNEL = "mining"
 ORDER_CONSTRUCTION_CHANNEL = "construction"
 
 comms = get_component("comms")
+notebook = get_component("notebook")
 
 class cVehicle():
     vehicle:Rover|Pioneer
@@ -139,6 +140,7 @@ class cVehicle():
             not self.vehicle.cargo.full()
             and not self.battery_below_threshold()
         ):
+            self.vehicle.input.connect("")
             if self.vehicle.drill.mine().status != "ok":
                 break
         
@@ -170,10 +172,22 @@ class cVehicle():
             or not self._cargo_installed()
         ):
             return
-        
-        pos = self.vehicle.nav.get_position()
-        mining_site = cNav.get_nearest_site_mineral(mineral_id,pos.x,pos.y)
-        self.mine_at_PointOfInterest(mining_site)
+        mining_drill_data = notebook.get("mining_drill.mineral").get(mineral_id,None)
+        if mining_drill_data:
+            x,y = mining_drill_data[1]
+            self.move_to_position(x,y)
+            self._input_connect(mining_drill_data[0])
+            self._input_take_item(
+                mineral_id,
+                min(
+                    self.vehicle.input.capacity()-self.vehicle.input.count(),
+                    get_component(mining_drill_data[0]).output.count()
+                )
+            )
+        else:
+            pos = self.vehicle.nav.get_position()
+            mining_site = cNav.get_nearest_site_mineral(mineral_id,pos.x,pos.y)
+            self.mine_at_PointOfInterest(mining_site)
         
         return
     
